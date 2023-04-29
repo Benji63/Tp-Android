@@ -33,22 +33,22 @@ public class AddItemActivity extends AppCompatActivity {
         valueEditText = findViewById(R.id.edit_text_double_value);
         addButton = findViewById(R.id.fab_save_item);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = nameEditText.getText().toString();
-                String value = valueEditText.getText().toString();
+        addButton.setOnClickListener(view -> {
+            String name = nameEditText.getText().toString();
+            String value = valueEditText.getText().toString();
 
-                if (name.isEmpty() || value.isEmpty()) {
-                    Toast.makeText(AddItemActivity.this, "Remplissez les cases", Toast.LENGTH_SHORT).show();
-                } else {
-                    double doubleValue = Double.parseDouble(value);
-                    int imageResId = R.drawable.bonhomme;
-                    Item item = new Item(imageResId, doubleValue, name);
-                    MainActivity activity = (MainActivity) view.getContext();
-                    activity.addData(item.getImageResId(), item.getDoubleValue(), item.getStringValue());
-                    finish();
-                }
+            if (name.isEmpty() || value.isEmpty()) {
+                Toast.makeText(AddItemActivity.this, "Remplissez les cases", Toast.LENGTH_SHORT).show();
+            } else {
+                double doubleValue = Double.parseDouble(value);
+                int imageResId = R.drawable.bonhomme;
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("imageResId", imageResId);
+                resultIntent.putExtra("doubleValue", doubleValue);
+                resultIntent.putExtra("stringValue", name);
+                setResult(RESULT_OK, resultIntent);
+                finish();
             }
         });
         Button retourButton = findViewById(R.id.button_back);

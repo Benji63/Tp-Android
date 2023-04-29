@@ -38,14 +38,6 @@ public class ItemDetailActivity extends AppCompatActivity {
         stringTextView = findViewById(R.id.string_value_view);
         stringTextView.setText(stringValue);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ItemDetailActivity.this, AddItemActivity.class);
-                startActivity(intent);
-            }
-        });
 
         Button retourButton = findViewById(R.id.back_button);
 

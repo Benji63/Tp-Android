@@ -1,5 +1,6 @@
 package com.example.tparendreandroid;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,11 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private final List<Item> itemList;
-    private final ItemClickListener listener;
+    private final ItemClickListener itemClickListener;
 
-    public MyAdapter(List<Item> itemList, ItemClickListener listener) {
+    public MyAdapter(List<Item> itemList, ItemClickListener itemClickListener) {
         this.itemList = itemList;
-        this.listener = listener;
+        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -59,9 +60,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Item item = itemList.get(position);
-                listener.onItemClick(item);
+                itemClickListener.onItemClick(item);
             }
         }
     }
 }
-

@@ -1,11 +1,13 @@
 package com.example.tparendreandroid;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,15 +44,32 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         adapter = new MyAdapter(itemList, this);
         recyclerView.setAdapter(adapter);
 
+
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+            startActivityForResult(intent, 1);
         });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            int imageResId = data.getIntExtra("imageResId", 0);
+            double doubleValue = data.getDoubleExtra("doubleValue", 0);
+            String stringValue = data.getStringExtra("stringValue");
+
+            Log.d("MainActivity", "imageResId: " + imageResId);
+            Log.d("MainActivity", "doubleValue: " + doubleValue);
+            Log.d("MainActivity", "stringValue: " + stringValue);
+
+            addData(imageResId, doubleValue, stringValue);
+        }
+    }
+
 
     @Override
     public void onItemClick(Item item) {
