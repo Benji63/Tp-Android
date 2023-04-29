@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private EditText nameEditText;
     private EditText valueEditText;
-    private Button addButton;
+    private FloatingActionButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,16 @@ public class AddItemActivity extends AppCompatActivity {
                     activity.addData(item.getImageResId(), item.getDoubleValue(), item.getStringValue());
                     finish();
                 }
+            }
+        });
+        Button retourButton = findViewById(R.id.button_back);
+
+// Définition de l'événement onClickListener pour le bouton retour
+        retourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Retour à la première activité
+                finish();
             }
         });
     }
