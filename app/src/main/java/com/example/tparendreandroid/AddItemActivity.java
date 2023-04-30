@@ -4,6 +4,7 @@ package com.example.tparendreandroid;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,8 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText nameEditText;
     private EditText valueEditText;
     private FloatingActionButton addButton;
+    private static final int REQUEST_SELECT_IMAGE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,15 @@ public class AddItemActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.edit_text_string_value);
         valueEditText = findViewById(R.id.edit_text_double_value);
         addButton = findViewById(R.id.fab_save_item);
+
+        Button btnSelectImage = findViewById(R.id.button_add_image);
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_SELECT_IMAGE);
+            }
+        });
 
         addButton.setOnClickListener(view -> {
             String name = nameEditText.getText().toString();
@@ -51,6 +63,10 @@ public class AddItemActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+
         Button retourButton = findViewById(R.id.button_back);
 
 // Définition de l'événement onClickListener pour le bouton retour
@@ -62,6 +78,7 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
     }
+
 }
 
 
