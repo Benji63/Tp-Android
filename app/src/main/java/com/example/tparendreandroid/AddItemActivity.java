@@ -25,6 +25,7 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText valueEditText;
     private FloatingActionButton addButton;
     private static final int REQUEST_SELECT_IMAGE = 1;
+    private Uri selectedImageUri;
 
 
     @Override
@@ -45,6 +46,8 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+
+
         addButton.setOnClickListener(view -> {
             String name = nameEditText.getText().toString();
             String value = valueEditText.getText().toString();
@@ -53,10 +56,13 @@ public class AddItemActivity extends AppCompatActivity {
                 Toast.makeText(AddItemActivity.this, "Remplissez les cases", Toast.LENGTH_SHORT).show();
             } else {
                 double doubleValue = Double.parseDouble(value);
-                int imageResId = R.drawable.bonhomme;
+                //int imageResId = R.drawable.bonhomme;
+                String path = selectedImageUri.getLastPathSegment();
+                int image_value = Integer.parseInt(path);
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("imageResId", imageResId);
+                //resultIntent.putExtra("imageResId", imageResId);
+                resultIntent.putExtra("imageResId", image_value);
                 resultIntent.putExtra("doubleValue", doubleValue);
                 resultIntent.putExtra("stringValue", name);
                 setResult(RESULT_OK, resultIntent);
@@ -78,7 +84,16 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == REQUEST_SELECT_IMAGE && resultCode == RESULT_OK && data != null) {
+            selectedImageUri = data.getData();
+        }
+
+
+    }
 }
 
 
