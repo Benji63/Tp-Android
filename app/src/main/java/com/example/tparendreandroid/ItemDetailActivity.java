@@ -3,14 +3,15 @@ package com.example.tparendreandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.bumptech.glide.Glide;
 
 public class ItemDetailActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -24,13 +25,20 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         // Récupérer les données de l'intent
         Intent intent = getIntent();
-        int imageResId = intent.getIntExtra("imageResId", 0);
+        String imageUriString = intent.getStringExtra("imageUriString");
         double doubleValue = intent.getDoubleExtra("doubleValue", 0);
         String stringValue  = intent.getStringExtra("stringValue");
 
         // Afficher les données dans les TextView et ImageView correspondants
         imageView = findViewById(R.id.image_view);
-        imageView.setImageResource(imageResId);
+        if (imageUriString != null) {
+            Glide.with(this)
+                    .load(imageUriString)
+                    .error(R.drawable.bonhomme)
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.bonhomme);
+        }
 
         doubleTextView = findViewById(R.id.double_value_view);
         doubleTextView.setText(String.format("KDA : %.1f", doubleValue));
@@ -38,10 +46,9 @@ public class ItemDetailActivity extends AppCompatActivity {
         stringTextView = findViewById(R.id.string_value_view);
         stringTextView.setText(stringValue);
 
-
         Button retourButton = findViewById(R.id.back_button);
 
-// Définition de l'événement onClickListener pour le bouton retour
+        // Définition de l'événement onClickListener pour le bouton retour
         retourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,3 +58,4 @@ public class ItemDetailActivity extends AppCompatActivity {
         });
     }
 }
+

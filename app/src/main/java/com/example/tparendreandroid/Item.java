@@ -1,25 +1,22 @@
 package com.example.tparendreandroid;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 public class Item {
-    private int imageResId;
+    private String imageUriString;
     private double doubleValue;
     private String stringValue;
 
-    public Item(int imageResId, double doubleValue, String stringValue) {
-        this.imageResId = imageResId;
+    public Item(String imageUriString, double doubleValue, String stringValue) {
+        this.imageUriString = imageUriString;
         this.doubleValue = doubleValue;
         this.stringValue = stringValue;
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public String getImageUriString() {
+        return imageUriString;
     }
 
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
+    public void setImageUriString(String imageUriString) {
+        this.imageUriString = imageUriString;
     }
 
     public double getDoubleValue() {
@@ -37,5 +34,4 @@ public class Item {
     public void setStringValue(String stringValue) {
         this.stringValue = stringValue;
     }
-
 }

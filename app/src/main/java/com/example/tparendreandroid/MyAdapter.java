@@ -1,6 +1,9 @@
 package com.example.tparendreandroid;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -32,10 +37,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = itemList.get(position);
-        holder.imageView.setImageResource(item.getImageResId());
+        Context context = holder.imageView.getContext();
+        String imageUriString = item.getImageUriString();
+        if (imageUriString != null && !imageUriString.isEmpty()) {
+            Glide.with(context)
+                    .load(imageUriString)
+                    .error(R.drawable.bonhomme)
+                    .into(holder.imageView);
+        } else {
+            holder.imageView.setImageResource(R.drawable.bonhomme);
+        }
         holder.doubleTextView.setText(String.format("KDA : %.1f", item.getDoubleValue()));
         holder.stringTextView.setText(item.getStringValue());
     }
+
 
     @Override
     public int getItemCount() {
@@ -60,8 +75,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Item item = itemList.get(position);
-                itemClickListener.onItemClick(item);
+                itemClickListener.onItemClick(item, position);
             }
         }
     }
+    public interface ItemClickListener {
+        void onItemClick(Item item, int position);
+    }
+
 }

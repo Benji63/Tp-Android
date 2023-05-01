@@ -3,4 +3,5 @@
     <string name="plus_description">Ajouter une un joueur</string>
     <string name="add_image">Ajouter une image</string>
     <string name="save_item">sauvegarder</string>
+    <string name="image_description">Image</string>
 </resources>

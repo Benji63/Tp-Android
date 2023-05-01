@@ -1,4 +1,3 @@
-
 package com.example.tparendreandroid;
 
 import android.content.Intent;
@@ -16,53 +15,38 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AddItemActivity extends AppCompatActivity {
-
-    private EditText nameEditText;
-    private EditText valueEditText;
-    private FloatingActionButton addButton;
-    private static final int REQUEST_SELECT_IMAGE = 1;
-    private Uri selectedImageUri;
-
+    private static final int PICK_IMAGE_REQUEST = 100;
+    private EditText editTextDoubleValue;
+    private EditText editTextStringValue;
+    private ImageView imageView;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        nameEditText = findViewById(R.id.edit_text_string_value);
-        valueEditText = findViewById(R.id.edit_text_double_value);
-        addButton = findViewById(R.id.fab_save_item);
+        imageView = findViewById(R.id.image_view);
+        Button buttonAddImage = findViewById(R.id.button_add_image);
+        buttonAddImage.setOnClickListener(v -> openImageChooser());
 
-        Button btnSelectImage = findViewById(R.id.button_add_image);
-        btnSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQUEST_SELECT_IMAGE);
-            }
-        });
+        editTextDoubleValue = findViewById(R.id.edit_text_double_value);
+        editTextStringValue = findViewById(R.id.edit_text_string_value);
 
-
-
+        FloatingActionButton addButton = findViewById(R.id.fab_save_item);
         addButton.setOnClickListener(view -> {
-            String name = nameEditText.getText().toString();
-            String value = valueEditText.getText().toString();
+            String name = editTextStringValue.getText().toString();
+            String value = editTextDoubleValue.getText().toString();
 
             if (name.isEmpty() || value.isEmpty()) {
                 Toast.makeText(AddItemActivity.this, "Remplissez les cases", Toast.LENGTH_SHORT).show();
             } else {
                 double doubleValue = Double.parseDouble(value);
-                //int imageResId = R.drawable.bonhomme;
-                String path = selectedImageUri.getLastPathSegment();
-                int image_value = Integer.parseInt(path);
+                String imageUriString = (imageUri != null) ? imageUri.toString() : null;
 
                 Intent resultIntent = new Intent();
-                //resultIntent.putExtra("imageResId", imageResId);
-                resultIntent.putExtra("imageResId", image_value);
+                resultIntent.putExtra("imageUriString", imageUriString);
                 resultIntent.putExtra("doubleValue", doubleValue);
                 resultIntent.putExtra("stringValue", name);
                 setResult(RESULT_OK, resultIntent);
@@ -70,12 +54,7 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         Button retourButton = findViewById(R.id.button_back);
-
-// Définition de l'événement onClickListener pour le bouton retour
         retourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,16 +63,23 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void openImageChooser() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_SELECT_IMAGE && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            if (imageUri != null) {
+                imageView.setImageURI(imageUri);
+            } else {
+                imageView.setImageResource(R.drawable.bonhomme);
+            }
         }
-
-
     }
 }
-
-
