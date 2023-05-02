@@ -34,22 +34,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Item item = itemList.get(position);
-        Context context = holder.imageView.getContext();
-        String imageUriString = item.getImageUriString();
-        if (imageUriString != null && !imageUriString.isEmpty()) {
-            Glide.with(context)
-                    .load(imageUriString)
-                    .error(R.drawable.bonhomme)
+        Item currentItem = itemList.get(position);
+
+        if (currentItem.getImageUriString() != null) {
+            Glide.with(holder.imageView.getContext())
+                    .load(currentItem.getImageUriString())
+                    .placeholder(R.drawable.bonhomme)
                     .into(holder.imageView);
         } else {
             holder.imageView.setImageResource(R.drawable.bonhomme);
         }
-        holder.doubleTextView.setText(String.format("KDA : %.1f", item.getDoubleValue()));
-        holder.stringTextView.setText(item.getStringValue());
+
+        holder.doubleTextView.setText(String.valueOf(currentItem.getDoubleValue()));
+        holder.stringTextView.setText(currentItem.getStringValue());
     }
+
 
 
     @Override
